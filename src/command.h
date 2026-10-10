@@ -1,80 +1,79 @@
 #ifndef COMMAND_H
 #define COMMAND_H
 
+#include <iostream>
 #include <string>
+
+enum operations {
+    get,
+    set,
+    del,
+    exists
+};
 
 class Command {
     protected:
-        std::string name;
+        int operation;
+        std::string targetName;
+        int targetId;
+        std::string targetValue;
+
+        void setOperation(std::string rawOperation) {
+            if (rawOperation == "GET") {
+                this->operation = operations::get;
+            }
+
+            if (rawOperation == "SET") {
+                this->operation = operations::set;
+            }
+
+            if (rawOperation == "DEL") {
+                this->operation = operations::del;
+            }
+
+            if (rawOperation == "EXISTS") {
+                this->operation = operations::exists;
+            }
+        }
+
+        void setTarget(std::string rawValue) {
+            int delimeterIndex = rawValue.find(":");
+
+            if (delimeterIndex != std::string::npos) {
+                this->targetName = rawValue.substr(0, delimeterIndex - 1);
+                this->targetId = std::stoi(rawValue.substr(delimeterIndex + 1, rawValue.length()));
+            }
+        }
+
+        void setValue(std::string rawValue) {
+            this->targetValue = rawValue;
+        }
 
     public:
-        Command(std::string name) {
-            this->name = name;
-        }
+        Command(std::string rawInput) {
+            int start = 0;
+            int paramCounter = 0;
 
-        std::string getName() {
-            return this->name;
-        }
+            for(int i = 0; i <= rawInput.length(); i++) {
+                if (rawInput[i] == ' ') {
+                    if (paramCounter == 0) {
+                        this->setOperation(rawInput.substr(start, i - 1));
+                        paramCounter++;
+                    }
 
-        void setName(std::string name) {
-            this->name = name;
-        }
-};
+                    if (paramCounter == 1) {
+                        this->setTarget(rawInput.substr(start, i - 1));
+                        paramCounter++;
+                    }
 
-class CommandStr : Command {
-    private:
-        std::string value;
+                    if (paramCounter == 2) {
+                        this->setValue(rawInput.substr(start, i - 1));
+                        paramCounter++;
+                    }
 
-    public:
-        CommandStr(std::string name, std::string value) : Command(name) {
-            this->name = name;
-            this->value = value;
-        }
-
-        std::string getValue() {
-            return this->value;
-        }
-
-        void setValue(std::string value) {
-            this->value = value;
-        }
-};
-
-class CommandInt : Command {
-    private:
-        int value;
-
-    public:
-        CommandInt(std::string name, int value) : Command(name) {
-            this->name = name;
-            this->value = value;
-        }
-
-        int getValue() {
-            return this->value;
-        }
-
-        void setValue(int value) {
-            this->value = value;
-        }
-};
-
-class CommandBool : Command {
-    private:
-        bool value;
-
-    public:
-        CommandBool(std::string name, bool value) : Command(name) {
-            this->name = name;
-            this->value = value;
-        }
-
-        bool getValue() {
-            return this->value;
-        }
-
-        void setValue(bool value) {
-            this->value = value;
+                    start = i;
+                }
+            }
         }
 };
 

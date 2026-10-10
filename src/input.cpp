@@ -10,8 +10,9 @@ std::vector<Command> checkUserCliInput() {
     std::cin >> inputBuffer;
 
     std::vector<Command> commands;
+    Command* command = new Command(inputBuffer);
 
-    std::cout << "input: " << inputBuffer;
+    commands.push_back(*command);
 
     return commands;
 };

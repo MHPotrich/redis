@@ -1,8 +1,10 @@
 #ifndef INPUT_H
 #define INPUT_H
 
+#include "command.h"
 #include <string>
+#include <vector>
 
-std::string checkUserCliInput();
+std::vector<Command> checkUserCliInput();
 
 #endif // INPUT_H

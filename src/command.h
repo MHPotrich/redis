@@ -12,10 +12,10 @@ enum operations {
 };
 
 class Command {
-    protected:
-        int operation;
+    private:
+        int operation = -1;
         std::string targetName;
-        int targetId;
+        int targetId = -1;
         std::string targetValue;
 
         void setOperation(std::string rawOperation) {
@@ -34,6 +34,10 @@ class Command {
             if (rawOperation == "EXISTS") {
                 this->operation = operations::exists;
             }
+
+            if (this->operation == -1) {
+                throw std::runtime_error("-ERR unknown command '" + rawOperation + "'\r\n");
+            }
         }
 
         void setTarget(std::string rawValue) {
@@ -42,6 +46,8 @@ class Command {
             if (delimeterIndex != std::string::npos) {
                 this->targetName = rawValue.substr(0, delimeterIndex - 1);
                 this->targetId = std::stoi(rawValue.substr(delimeterIndex + 1, rawValue.length()));
+            } else {
+                this->targetName = rawValue;
             }
         }
 
@@ -74,6 +80,22 @@ class Command {
                     start = i;
                 }
             }
+        }
+
+        int getOperation() {
+            return this->operation;
+        }
+
+        std::string getTargetName() {
+            return this->targetName;
+        }
+
+        int getTargetId() {
+            return this->targetId;
+        }
+
+        std::string getValue() {
+            return this->targetValue;
         }
 };
 

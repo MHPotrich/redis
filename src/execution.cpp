@@ -3,6 +3,7 @@
 #include "database.h"
 #include <iostream>
 #include <ostream>
+#include <vector>
 
 void executeCommand(Command command, Database *dataBase) {
     try {
@@ -31,7 +32,21 @@ void executeCommand(Command command, Database *dataBase) {
 
             std::cout << "OK" << std::endl;
         }
-    } catch (const std::runtime_error& error) {
+
+        // DEL
+        if (command.getOperation() == 2) {
+            dataBase->remove(command.getTargetName(), command.getTargetId());
+
+            std::cout << "OK" << std::endl;
+        }
+
+        // EXISTS
+        if (command.getOperation() == 3) {
+            std::vector<Data> matchData = dataBase->find(command.getTargetName(), command.getTargetId());
+
+            std::cout << (matchData.size() > 0 ? "TRUE" : "FALSE") << std::endl;
+        }
+    } catch (const std::invalid_argument& error) {
         std::cout << error.what() << std::endl;
     }
 };

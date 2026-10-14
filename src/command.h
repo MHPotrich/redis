@@ -36,7 +36,7 @@ class Command {
             }
 
             if (this->operation == -1) {
-                throw std::runtime_error("-ERR unknown command '" + rawOperation + "'");
+                throw std::invalid_argument("-ERR unknown command '" + rawOperation + "'");
             }
         }
 

@@ -2,6 +2,7 @@
 #include "data.h"
 #include "database.h"
 #include <iostream>
+#include <ostream>
 
 void executeCommand(Command command, Database *dataBase) {
     try {
@@ -15,8 +16,10 @@ void executeCommand(Command command, Database *dataBase) {
                 matchData = dataBase->find(command.getTargetName());
             }
 
-            for (Data item : matchData) {
-                std::cout << item.getValue();
+            std::cout << "$" << matchData.size() << std::endl;
+            for (int i = 0; i < matchData.size(); i++) {
+                std::cout << "*" << i + 1 << std::endl;
+                std::cout << matchData.at(i).getValue() << std::endl;
             }
         }
 
@@ -26,9 +29,9 @@ void executeCommand(Command command, Database *dataBase) {
 
             dataBase->add(*newData);
 
-            std::cout << "OK";
+            std::cout << "OK" << std::endl;
         }
     } catch (const std::runtime_error& error) {
-        std::cout << error.what();
+        std::cout << error.what() << std::endl;
     }
 };

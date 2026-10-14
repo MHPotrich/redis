@@ -36,7 +36,7 @@ class Command {
             }
 
             if (this->operation == -1) {
-                throw std::runtime_error("-ERR unknown command '" + rawOperation + "'\r\n");
+                throw std::runtime_error("-ERR unknown command '" + rawOperation + "'");
             }
         }
 
@@ -44,7 +44,7 @@ class Command {
             int delimeterIndex = rawValue.find(":");
 
             if (delimeterIndex != std::string::npos) {
-                this->targetName = rawValue.substr(0, delimeterIndex - 1);
+                this->targetName = rawValue.substr(0, delimeterIndex);
                 this->targetId = std::stoi(rawValue.substr(delimeterIndex + 1, rawValue.length()));
             } else {
                 this->targetName = rawValue;
@@ -58,26 +58,24 @@ class Command {
     public:
         Command(std::string rawInput) {
             int start = 0;
-            int paramCounter = 0;
+            int paramCounter = 1;
 
             for(int i = 0; i <= rawInput.length(); i++) {
-                if (rawInput[i] == ' ') {
-                    if (paramCounter == 0) {
-                        this->setOperation(rawInput.substr(start, i - 1));
-                        paramCounter++;
-                    }
-
+                if (rawInput[i] == ' ' || i == rawInput.length()) {
                     if (paramCounter == 1) {
-                        this->setTarget(rawInput.substr(start, i - 1));
-                        paramCounter++;
+                        this->setOperation(rawInput.substr(start, i - start));
                     }
 
                     if (paramCounter == 2) {
-                        this->setValue(rawInput.substr(start, i - 1));
-                        paramCounter++;
+                        this->setTarget(rawInput.substr(start + 1, i - start));
+                    }
+
+                    if (paramCounter == 3) {
+                        this->setValue(rawInput.substr(start + 1, i - start));
                     }
 
                     start = i;
+                    paramCounter++;
                 }
             }
         }

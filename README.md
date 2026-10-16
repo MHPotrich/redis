@@ -10,61 +10,44 @@ My own redis implementation.
 
 ### Create item
 Input:
-```
-$ > SET user:1:name test
+```bash
+> SET user:1:name "test"
 ```
 
 Output:
-```
+```bash
 OK
 ```
 
 ### Get single item
 Input:
-```
-$ > GET user:1:name
+```bash
+> GET user:1:name
 ```
 
 Output:
-```
-$1
-*1
-test
+```bash
+"test"
 ```
 
 ### Delete item
 Input:
-```
-$ > DEL user:1:name
+```bash
+> DEL user:1:name
 ```
 
 Output:
-```
-OK
+```bash
+(integer) 1
 ```
 
 ### Check if item exists
 Input:
-```
-$ > EXISTS user:1:name
-```
-
-Output:
-```
-TRUE
-```
-
-### List all items by table
-Input:
-```
-$ > GET user
+```bash
+> EXISTS user:1:name
 ```
 
 Output:
-```
-$2
-*1
-test
-*2
-test2
+```bash
+(integer) 1
 ```

@@ -55,10 +55,10 @@ Output:
 ### Increase item value
 Input:
 ```bash
-> SET number 1
+> SET number "1"
 ```
 ```bash
-> INCR number 5
+> INCR number "5"
 ```
 
 Output:
@@ -69,10 +69,10 @@ Output:
 ### Decrease item value
 Input:
 ```bash
-> SET number 5
+> SET number "5"
 ```
 ```bash
-> DECR number 2
+> DECR number "2"
 ```
 
 Output:

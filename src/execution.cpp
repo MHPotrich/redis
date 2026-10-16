@@ -15,7 +15,7 @@ void executeCommand(Command command, Database *dataBase) {
 
             if(matchData.size() > 0) {
                 for (int i = 0; i < matchData.size(); i++) {
-                    std::cout << matchData.at(i).getValue() << std::endl;
+                    std::cout << '"' << matchData.at(i).getValue() << '"' << std::endl;
                 }
             } else {
                 std::cout << "(nil)" << std::endl;
@@ -93,6 +93,18 @@ void executeCommand(Command command, Database *dataBase) {
                 } catch (const std::out_of_range& error) {
                     std::cout << "(error) ERR value is not an integer or out of range" << std::endl;
                 }
+            }
+        }
+
+        // APPEND
+        if (command.getOperation() == 6) {
+            std::vector<Data> matchData = dataBase->find(command.getTarget());
+
+            for (Data item : matchData) {
+                std::string newValue = item.getValue() + command.getValue();
+
+                dataBase->update(command.getTarget(), newValue);
+                std::cout << "(integer) " << newValue.length() << std::endl;
             }
         }
     } catch (const std::invalid_argument& error) {

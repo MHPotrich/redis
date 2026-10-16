@@ -79,3 +79,17 @@ Output:
 ```bash
 (integer) 3
 ```
+
+### Append string to item value
+Input:
+```bash
+> SET test "append"
+```
+```bash
+> APPEND test " test"
+```
+
+Output:
+```bash
+(integer) 11
+```

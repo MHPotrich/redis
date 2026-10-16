@@ -1,6 +1,7 @@
 #ifndef COMMAND_H
 #define COMMAND_H
 
+#include <cstddef>
 #include <iostream>
 #include <string>
 
@@ -10,7 +11,8 @@ enum operations {
     del,
     exists,
     incr,
-    decr
+    decr,
+    append
 };
 
 class Command {
@@ -42,6 +44,10 @@ class Command {
 
             if (rawOperation == "DECR") {
                 this->operation = operations::decr;
+            }
+
+            if (rawOperation == "APPEND") {
+                this->operation = operations::append;
             }
 
             if (this->operation == -1) {
@@ -79,6 +85,14 @@ class Command {
                     start = i;
                     paramCounter++;
                 }
+            }
+
+            size_t startString = rawInput.find_first_of('"');
+            size_t endString = rawInput.find_last_of('"');
+
+            if (startString != std::string::npos && endString != std::string::npos) {
+                startString = startString + 1;
+                this->setValue(rawInput.substr(startString, endString - startString));
             }
         }
 

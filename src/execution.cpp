@@ -9,13 +9,7 @@ void executeCommand(Command command, Database *dataBase) {
     try {
         // GET
         if (command.getOperation() == 0) {
-            std::vector<Data> matchData;
-
-            if (command.getTargetId() != -1) {
-                matchData = dataBase->find(command.getTargetName(), command.getTargetId());
-            } else {
-                matchData = dataBase->find(command.getTargetName());
-            }
+            std::vector<Data> matchData = dataBase->find(command.getTarget());
 
             std::cout << "$" << matchData.size() << std::endl;
             for (int i = 0; i < matchData.size(); i++) {
@@ -26,7 +20,7 @@ void executeCommand(Command command, Database *dataBase) {
 
         // SET
         if (command.getOperation() == 1) {
-            Data *newData = new Data(command.getTargetName(), command.getTargetId(), command.getValue());
+            Data *newData = new Data(command.getTarget(), command.getValue());
 
             dataBase->add(*newData);
 
@@ -35,14 +29,14 @@ void executeCommand(Command command, Database *dataBase) {
 
         // DEL
         if (command.getOperation() == 2) {
-            dataBase->remove(command.getTargetName(), command.getTargetId());
+            dataBase->remove(command.getTarget());
 
             std::cout << "OK" << std::endl;
         }
 
         // EXISTS
         if (command.getOperation() == 3) {
-            std::vector<Data> matchData = dataBase->find(command.getTargetName(), command.getTargetId());
+            std::vector<Data> matchData = dataBase->find(command.getTarget());
 
             std::cout << (matchData.size() > 0 ? "TRUE" : "FALSE") << std::endl;
         }

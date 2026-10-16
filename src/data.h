@@ -5,23 +5,17 @@
 
 class Data {
     private:
-        std::string table;
-        int id;
+        std::string target;
         std::string value;
 
     public:
-        Data(std::string table, int id, std::string value) {
-            this->table = table;
-            this->id = id;
+        Data(std::string target, std::string value) {
+            this->target = target;
             this->value = value;
         }
 
-        std::string getTable() {
-            return this->table;
-        }
-
-        int getId() {
-            return this->id;
+        std::string getTarget() {
+            return this->target;
         }
 
         std::string getValue() {

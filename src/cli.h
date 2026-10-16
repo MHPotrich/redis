@@ -1,5 +1,5 @@
-#ifndef INPUT_H
-#define INPUT_H
+#ifndef CLI_H
+#define CLI_H
 
 #include "command.h"
 #include <string>
@@ -7,4 +7,6 @@
 
 std::vector<Command> checkUserCliInput();
 
-#endif // INPUT_H
+void print(std::string content);
+
+#endif // CLI_H

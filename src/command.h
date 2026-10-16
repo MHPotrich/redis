@@ -14,9 +14,8 @@ enum operations {
 class Command {
     private:
         int operation = -1;
-        std::string targetName;
-        int targetId = -1;
-        std::string targetValue;
+        std::string target;
+        std::string value;
 
         void setOperation(std::string rawOperation) {
             if (rawOperation == "GET") {
@@ -40,19 +39,12 @@ class Command {
             }
         }
 
-        void setTarget(std::string rawValue) {
-            int delimeterIndex = rawValue.find(":");
-
-            if (delimeterIndex != std::string::npos) {
-                this->targetName = rawValue.substr(0, delimeterIndex);
-                this->targetId = std::stoi(rawValue.substr(delimeterIndex + 1, rawValue.length()));
-            } else {
-                this->targetName = rawValue;
-            }
+        void setTarget(std::string target) {
+            this->target = target;
         }
 
-        void setValue(std::string rawValue) {
-            this->targetValue = rawValue;
+        void setValue(std::string value) {
+            this->value = value;
         }
 
     public:
@@ -67,7 +59,7 @@ class Command {
                     }
 
                     if (paramCounter == 2) {
-                        this->setTarget(rawInput.substr(start + 1, i - start));
+                        this->setTarget(rawInput.substr(start + 1, i - (start + 1)));
                     }
 
                     if (paramCounter == 3) {
@@ -84,16 +76,12 @@ class Command {
             return this->operation;
         }
 
-        std::string getTargetName() {
-            return this->targetName;
-        }
-
-        int getTargetId() {
-            return this->targetId;
+        std::string getTarget() {
+            return this->target;
         }
 
         std::string getValue() {
-            return this->targetValue;
+            return this->value;
         }
 };
 

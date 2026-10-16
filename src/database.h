@@ -2,6 +2,8 @@
 #define DATABASE_H
 
 #include "data.h"
+#include <iostream>
+#include <ostream>
 #include <vector>
 #include <algorithm>
 
@@ -12,24 +14,15 @@ class Database {
     public:
         Database() {}
 
-        std::vector<Data> find(std::string table) {
+        std::vector<Data> find(std::string target) {
             std::vector<Data> filteredItems;
+            bool listAll = target.find(":") != std::string::npos;
 
             for (Data item : this->data) {
-                if(item.getTable() == table) {
-                    filteredItems.push_back(item);
-                }
-            }
+                bool hasTableName = item.getTarget().find(target) != std::string::npos;
+                bool isTarget = item.getTarget() == target;
 
-            return filteredItems;
-        }
-
-        std::vector<Data> find(std::string table, int id) {
-            std::vector<Data> filteredByTable = this->find(table);
-            std::vector<Data> filteredItems;
-
-            for (Data item : this->data) {
-                if(item.getId() == id) {
+                if(listAll ? isTarget : hasTableName) {
                     filteredItems.push_back(item);
                 }
             }
@@ -41,11 +34,11 @@ class Database {
             this->data.push_back(item);
         }
 
-        void remove(std::string table, int id) {
+        void remove(std::string target) {
             std::vector<Data> newData;
 
             for (Data item : this->data) {
-                if(item.getId() != id && item.getTable() != table) {
+                if(item.getTarget() != target) {
                     newData.push_back(item);
                 }
             }
@@ -53,9 +46,9 @@ class Database {
             this->data = newData;
         }
 
-        void update(std::string table, int id, std::string value) {
+        void update(std::string target, std::string value) {
             for (Data item : this->data) {
-                if(item.getId() != id && item.getTable() != table) {
+                if(item.getTarget() == target) {
                     item.setValue(value);
                 }
             }

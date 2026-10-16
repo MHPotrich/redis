@@ -3,7 +3,7 @@ My own redis implementation.
 
 ## Execution
 
-- Build: ```$ g++ -o redis ./src/input.cpp ./src/execution.cpp ./src/main.cpp```
+- Build: ```$ g++ -o redis ./src/cli.cpp ./src/execution.cpp ./src/main.cpp```
 - run: ```$ ./redis```
 
 ## Examples

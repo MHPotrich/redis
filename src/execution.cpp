@@ -11,10 +11,12 @@ void executeCommand(Command command, Database *dataBase) {
         if (command.getOperation() == 0) {
             std::vector<Data> matchData = dataBase->find(command.getTarget());
 
-            std::cout << "$" << matchData.size() << std::endl;
-            for (int i = 0; i < matchData.size(); i++) {
-                std::cout << "*" << i + 1 << std::endl;
-                std::cout << matchData.at(i).getValue() << std::endl;
+            if(matchData.size() > 0) {
+                for (int i = 0; i < matchData.size(); i++) {
+                    std::cout << matchData.at(i).getValue() << std::endl;
+                }
+            } else {
+                std::cout << "(nil)" << std::endl;
             }
         }
 
@@ -29,16 +31,16 @@ void executeCommand(Command command, Database *dataBase) {
 
         // DEL
         if (command.getOperation() == 2) {
-            dataBase->remove(command.getTarget());
+            int amountMatchs = dataBase->remove(command.getTarget());
 
-            std::cout << "OK" << std::endl;
+            std::cout << "(integer) " << amountMatchs << std::endl;
         }
 
         // EXISTS
         if (command.getOperation() == 3) {
             std::vector<Data> matchData = dataBase->find(command.getTarget());
 
-            std::cout << (matchData.size() > 0 ? "TRUE" : "FALSE") << std::endl;
+            std::cout << "(integer) " << matchData.size() << std::endl;
         }
     } catch (const std::invalid_argument& error) {
         std::cout << error.what() << std::endl;

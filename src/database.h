@@ -16,13 +16,9 @@ class Database {
 
         std::vector<Data> find(std::string target) {
             std::vector<Data> filteredItems;
-            bool listAll = target.find(":") != std::string::npos;
 
             for (Data item : this->data) {
-                bool hasTableName = item.getTarget().find(target) != std::string::npos;
-                bool isTarget = item.getTarget() == target;
-
-                if(listAll ? isTarget : hasTableName) {
+                if(item.getTarget().find(target) != std::string::npos) {
                     filteredItems.push_back(item);
                 }
             }
@@ -34,16 +30,21 @@ class Database {
             this->data.push_back(item);
         }
 
-        void remove(std::string target) {
+        int remove(std::string target) {
             std::vector<Data> newData;
+            int amountRemovedItems = 0;
 
             for (Data item : this->data) {
                 if(item.getTarget() != target) {
                     newData.push_back(item);
+                } else {
+                    amountRemovedItems++;
                 }
             }
 
             this->data = newData;
+
+            return amountRemovedItems;
         }
 
         void update(std::string target, std::string value) {

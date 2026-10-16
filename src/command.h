@@ -8,7 +8,9 @@ enum operations {
     get,
     set,
     del,
-    exists
+    exists,
+    incr,
+    decr
 };
 
 class Command {
@@ -32,6 +34,14 @@ class Command {
 
             if (rawOperation == "EXISTS") {
                 this->operation = operations::exists;
+            }
+
+            if (rawOperation == "INCR") {
+                this->operation = operations::incr;
+            }
+
+            if (rawOperation == "DECR") {
+                this->operation = operations::decr;
             }
 
             if (this->operation == -1) {

@@ -1,8 +1,10 @@
 #include "execution.h"
+#include "command.h"
 #include "data.h"
 #include "database.h"
 #include <iostream>
 #include <ostream>
+#include <string>
 #include <vector>
 
 void executeCommand(Command command, Database *dataBase) {
@@ -41,6 +43,57 @@ void executeCommand(Command command, Database *dataBase) {
             std::vector<Data> matchData = dataBase->find(command.getTarget());
 
             std::cout << "(integer) " << matchData.size() << std::endl;
+        }
+
+        // INCR
+        if (command.getOperation() == 4) {
+            std::vector<Data> matchData = dataBase->find(command.getTarget());
+
+            for(Data item : matchData) {
+                try {
+                    int value = std::stoi(item.getValue());
+                    int increaseValue = 1;
+
+                    if (!command.getValue().empty()) {
+                        increaseValue = std::stoi(command.getValue());
+                    }
+
+                    value = value + increaseValue;
+                    dataBase->update(command.getTarget(), std::to_string(value));
+
+                    std::cout << "(integer) " << value << std::endl;
+                } catch (const std::invalid_argument& error) {
+                    std::cout << "(error) ERR value is not an integer or out of range" << std::endl;
+                } catch (const std::out_of_range& error) {
+                    std::cout << "(error) ERR value is not an integer or out of range" << std::endl;
+                }
+            }
+
+        }
+
+        // DECR
+        if (command.getOperation() == 5) {
+            std::vector<Data> matchData = dataBase->find(command.getTarget());
+
+            for(Data item : matchData) {
+                try {
+                    int value = std::stoi(item.getValue());
+                    int increaseValue = 1;
+
+                    if (!command.getValue().empty()) {
+                        increaseValue = std::stoi(command.getValue());
+                    }
+
+                    value = value - increaseValue;
+                    dataBase->update(command.getTarget(), std::to_string(value));
+
+                    std::cout << "(integer) " << value << std::endl;
+                } catch (const std::invalid_argument& error) {
+                    std::cout << "(error) ERR value is not an integer or out of range" << std::endl;
+                } catch (const std::out_of_range& error) {
+                    std::cout << "(error) ERR value is not an integer or out of range" << std::endl;
+                }
+            }
         }
     } catch (const std::invalid_argument& error) {
         std::cout << error.what() << std::endl;

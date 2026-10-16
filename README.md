@@ -51,3 +51,31 @@ Output:
 ```bash
 (integer) 1
 ```
+
+### Increase item value
+Input:
+```bash
+> SET number 1
+```
+```bash
+> INCR number 5
+```
+
+Output:
+```bash
+(integer) 6
+```
+
+### Decrease item value
+Input:
+```bash
+> SET number 5
+```
+```bash
+> DECR number 2
+```
+
+Output:
+```bash
+(integer) 3
+```

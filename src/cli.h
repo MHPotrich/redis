@@ -7,6 +7,14 @@
 
 std::vector<Command> checkUserCliInput();
 
-void print(std::string content);
+void printStr(std::string content);
+
+void printInt(int value);
+
+void printNull();
+
+void printError(std::string message);
+
+void printOk();
 
 #endif // CLI_H

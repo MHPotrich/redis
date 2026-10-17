@@ -17,3 +17,23 @@ std::vector<Command> checkUserCliInput() {
 
     return commands;
 };
+
+void printInt(int value) {
+    std::cout << "(integer) " << value << std::endl;
+}
+
+void printStr(std::string content) {
+    std::cout << '"' << content << '"' << std::endl;
+}
+
+void printNull() {
+    std::cout << "(nil)" << std::endl;
+}
+
+void printError(std::string message) {
+    std::cout << "(error) ERR " << message << std::endl;
+}
+
+void printOk() {
+    std::cout << "OK" << std::endl;
+}

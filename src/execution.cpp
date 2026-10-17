@@ -1,9 +1,8 @@
 #include "execution.h"
+#include "cli.h"
 #include "command.h"
 #include "data.h"
 #include "database.h"
-#include <iostream>
-#include <ostream>
 #include <string>
 #include <vector>
 
@@ -15,10 +14,10 @@ void executeCommand(Command command, Database *dataBase) {
 
             if(matchData.size() > 0) {
                 for (int i = 0; i < matchData.size(); i++) {
-                    std::cout << '"' << matchData.at(i).getValue() << '"' << std::endl;
+                    printStr(matchData.at(i).getValue());
                 }
             } else {
-                std::cout << "(nil)" << std::endl;
+                printNull();
             }
         }
 
@@ -28,21 +27,21 @@ void executeCommand(Command command, Database *dataBase) {
 
             dataBase->add(*newData);
 
-            std::cout << "OK" << std::endl;
+            printOk();
         }
 
         // DEL
         if (command.getOperation() == 2) {
             int amountMatchs = dataBase->remove(command.getTarget());
 
-            std::cout << "(integer) " << amountMatchs << std::endl;
+            printInt(amountMatchs);
         }
 
         // EXISTS
         if (command.getOperation() == 3) {
             std::vector<Data> matchData = dataBase->find(command.getTarget());
 
-            std::cout << "(integer) " << matchData.size() << std::endl;
+            printInt(matchData.size());
         }
 
         // INCR
@@ -61,11 +60,11 @@ void executeCommand(Command command, Database *dataBase) {
                     value = value + increaseValue;
                     dataBase->update(command.getTarget(), std::to_string(value));
 
-                    std::cout << "(integer) " << value << std::endl;
+                    printInt(value);
                 } catch (const std::invalid_argument& error) {
-                    std::cout << "(error) ERR value is not an integer or out of range" << std::endl;
+                    printError("value is not an integer or out of range");
                 } catch (const std::out_of_range& error) {
-                    std::cout << "(error) ERR value is not an integer or out of range" << std::endl;
+                    printError("value is not an integer or out of range");
                 }
             }
 
@@ -87,11 +86,11 @@ void executeCommand(Command command, Database *dataBase) {
                     value = value - increaseValue;
                     dataBase->update(command.getTarget(), std::to_string(value));
 
-                    std::cout << "(integer) " << value << std::endl;
+                    printInt(value);
                 } catch (const std::invalid_argument& error) {
-                    std::cout << "(error) ERR value is not an integer or out of range" << std::endl;
+                    printError("value is not an integer or out of range");
                 } catch (const std::out_of_range& error) {
-                    std::cout << "(error) ERR value is not an integer or out of range" << std::endl;
+                    printError("value is not an integer or out of range");
                 }
             }
         }
@@ -104,7 +103,7 @@ void executeCommand(Command command, Database *dataBase) {
                 std::string newValue = item.getValue() + command.getValue();
 
                 dataBase->update(command.getTarget(), newValue);
-                std::cout << "(integer) " << newValue.length() << std::endl;
+                printInt(newValue.length());
             }
         }
     } catch (const std::invalid_argument& error) {

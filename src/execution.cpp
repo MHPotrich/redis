@@ -44,8 +44,8 @@ void executeCommand(Command command, Database *dataBase) {
             printInt(matchData.size());
         }
 
-        // INCR
-        if (command.getOperation() == 4) {
+        // INCR | INCRBY
+        if (command.getOperation() == 4 || command.getOperation() == 7) {
             std::vector<Data> matchData = dataBase->find(command.getTarget());
 
             for(Data item : matchData) {
@@ -53,8 +53,13 @@ void executeCommand(Command command, Database *dataBase) {
                     int value = std::stoi(item.getValue());
                     int increaseValue = 1;
 
-                    if (!command.getValue().empty()) {
-                        increaseValue = std::stoi(command.getValue());
+                    if (command.getOperation() == 7) {
+                        if (!command.getValue().empty()) {
+                            increaseValue = std::stoi(command.getValue());
+                        } else {
+                            printError("wrong number of arguments for 'incrby' command");
+                            return;
+                        }
                     }
 
                     value = value + increaseValue;
@@ -70,8 +75,8 @@ void executeCommand(Command command, Database *dataBase) {
 
         }
 
-        // DECR
-        if (command.getOperation() == 5) {
+        // DECR | DECRBY
+        if (command.getOperation() == 5 || command.getOperation() == 8) {
             std::vector<Data> matchData = dataBase->find(command.getTarget());
 
             for(Data item : matchData) {
@@ -79,8 +84,13 @@ void executeCommand(Command command, Database *dataBase) {
                     int value = std::stoi(item.getValue());
                     int increaseValue = 1;
 
-                    if (!command.getValue().empty()) {
-                        increaseValue = std::stoi(command.getValue());
+                    if (command.getOperation() == 8) {
+                        if (!command.getValue().empty()) {
+                            increaseValue = std::stoi(command.getValue());
+                        } else {
+                            printError("wrong number of arguments for 'decrby' command");
+                            return;
+                        }
                     }
 
                     value = value - increaseValue;

@@ -12,7 +12,9 @@ enum operations {
     exists,
     incr,
     decr,
-    append
+    append,
+    incrby,
+    decrby
 };
 
 class Command {
@@ -48,6 +50,14 @@ class Command {
 
             if (rawOperation == "APPEND") {
                 this->operation = operations::append;
+            }
+
+            if (rawOperation == "INCRBY") {
+                this->operation = operations::incrby;
+            }
+
+            if (rawOperation == "DECRBY") {
+                this->operation = operations::decrby;
             }
 
             if (this->operation == -1) {

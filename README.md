@@ -58,12 +58,26 @@ Input:
 > SET number "1"
 ```
 ```bash
-> INCR number "5"
+> INCR number
 ```
 
 Output:
 ```bash
-(integer) 6
+(integer) 2
+```
+
+### Increase item value by amount
+Input:
+```bash
+> SET number "1"
+```
+```bash
+> INCRBY number "3"
+```
+
+Output:
+```bash
+(integer) 4
 ```
 
 ### Decrease item value
@@ -72,7 +86,21 @@ Input:
 > SET number "5"
 ```
 ```bash
-> DECR number "2"
+> DECR number
+```
+
+Output:
+```bash
+(integer) 4
+```
+
+### Decrease item value by amount
+Input:
+```bash
+> SET number "5"
+```
+```bash
+> DECRBY number "2"
 ```
 
 Output:
